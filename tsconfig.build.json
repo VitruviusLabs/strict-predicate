@@ -1,0 +1,18 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./build",
+		"declarationDir": "./lib/types",
+		"baseUrl": ".",
+		"declaration": true,
+		"declarationMap": false,
+		"removeComments": false,
+		"sourceMap": false,
+		"noEmit": false,
+		"listFiles": false,
+		"listEmittedFiles": true
+	},
+	"include": [
+		"./src"
+	]
+}

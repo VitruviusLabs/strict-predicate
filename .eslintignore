@@ -1,0 +1,17 @@
+# Ignore folders #
+##################
+/node_modules/*
+/.yarn/*
+/build/*
+/lib/*
+/.stryker-tmp/*
+
+# Ignore files #
+################
+.eslintrc.cjs
+.pnp.*
+.DS_Store
+yarn.lock
+package-lock.json
+tsconfig.json
+tsconfig.*.json
