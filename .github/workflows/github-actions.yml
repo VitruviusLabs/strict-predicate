@@ -3,7 +3,7 @@ name: CI/CD Test
 
 run-name: Running CI/CD for ${{ github.ref_name }} (Triggered by user ${{ github.actor }})
 
-on: [ push, pull_request ]
+on: [ pull_request ]
 
 jobs:
 
@@ -112,5 +112,5 @@ jobs:
         with:
           name: initial-artifacts
       - name: Test with Mocha, Chai and Sinon
-        run: yarn run test:ci
+        run: yarn run test:unit
 
