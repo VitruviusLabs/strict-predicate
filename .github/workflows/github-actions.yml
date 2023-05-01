@@ -1,7 +1,7 @@
 # cspell:ignore mocharc
 name: CI/CD Test
 
-run-name: Running CI/CD for ${{ github.ref_name }} (Triggered by user ${{ github.actor }})
+run-name: Running CI/CD (Triggered by user ${{ github.triggering_actor }})
 
 on: [ pull_request ]
 
@@ -9,6 +9,7 @@ jobs:
 
   setup:
     runs-on: ubuntu-latest
+    environment: 'development-ci'
 
     steps:
       - name: Check out repository code
@@ -53,6 +54,7 @@ jobs:
   lint:
     needs: setup
     runs-on: ubuntu-latest
+    environment: 'development-ci'
     steps:
       - name: Dependencies cache unpacking
         uses: actions/cache@v3
@@ -69,6 +71,7 @@ jobs:
   typescript-syntax-check:
     needs: setup
     runs-on: ubuntu-latest
+    environment: 'development-ci'
     steps:
       - name: Dependencies cache unpacking
         uses: actions/cache@v3
@@ -85,6 +88,7 @@ jobs:
   spell-check:
     needs: setup
     runs-on: ubuntu-latest
+    environment: 'development-ci'
     steps:
       - name: Dependencies cache unpacking
         uses: actions/cache@v3
@@ -101,6 +105,7 @@ jobs:
   test:
     needs: setup
     runs-on: ubuntu-latest
+    environment: 'development-ci'
     steps:
       - name: Dependencies cache unpacking
         uses: actions/cache@v3
@@ -114,3 +119,21 @@ jobs:
       - name: Test with Mocha, Chai and Sinon
         run: yarn run test:unit
 
+  publish:
+    needs: [ lint, typescript-syntax-check, spell-check, test ]
+    runs-on: ubuntu-latest
+    environment: 'development-cd'
+    steps:
+      - name: Dependencies cache unpacking
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: initial-artifacts
+      - name: testing approval
+        run: echo "testing approval"
+    #   - name: Publish to NPM
+    #     run: yarn run publish:package
