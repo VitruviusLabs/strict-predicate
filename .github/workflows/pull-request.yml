@@ -1,0 +1,118 @@
+# cspell:ignore mocharc
+name: CI/CD Test
+
+run-name: Running CI/CD (Triggered by user ${{ github.triggering_actor }})
+
+on: [ pull_request ]
+
+jobs:
+
+  setup:
+    runs-on: ubuntu-latest
+    environment: 'development-ci'
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Set up Node.Js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          check-latest: true
+          architecture: x64
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install
+      - name: Dependencies caching
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: initial-artifacts
+          path: |
+            src/
+            __tests__/
+            .vscode/
+            package.json
+            yarn.lock
+            tsconfig.json
+            tsconfig.build.json
+            tsconfig.eslint.json
+            tsconfig.mocha.json
+            tsconfig.stryker.json
+            .eslintrc.cjs
+            .eslintignore
+            stryker.conf.json
+            .mocharc.json
+            .c8rc.json
+
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    environment: 'development-ci'
+    steps:
+      - name: Dependencies cache unpacking
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: initial-artifacts
+      - name: Lint with ESlint
+        run: yarn run eslint:check
+
+  typescript-syntax-check:
+    needs: setup
+    runs-on: ubuntu-latest
+    environment: 'development-ci'
+    steps:
+      - name: Dependencies cache unpacking
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: initial-artifacts
+      - name: Check TypeScript syntax
+        run: yarn run tsc -p tsconfig.build.json --noEmit
+
+  spell-check:
+    needs: setup
+    runs-on: ubuntu-latest
+    environment: 'development-ci'
+    steps:
+      - name: Dependencies cache unpacking
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: initial-artifacts
+      - name: Check spelling with CSpell
+        run: yarn run spell:check
+
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    environment: 'development-ci'
+    steps:
+      - name: Dependencies cache unpacking
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: initial-artifacts
+      - name: Test with Mocha, Chai and Sinon
+        run: yarn run test:unit

@@ -3,7 +3,10 @@ name: CI/CD Test
 
 run-name: Running CI/CD (Triggered by user ${{ github.triggering_actor }})
 
-on: [ pull_request ]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
 
@@ -28,8 +31,6 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        #   restore-keys: |
-        #     ${{ runner.os }}-yarn-
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -136,4 +137,6 @@ jobs:
       - name: testing approval
         run: echo "testing approval"
     #   - name: Publish to NPM
-    #     run: yarn run publish:package
+    #     run: yarn run publish
+    #     env:
+    #       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
