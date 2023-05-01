@@ -47,6 +47,13 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Node.Js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          check-latest: true
+          architecture: x64
+          cache: yarn
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -58,6 +65,13 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Node.Js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          check-latest: true
+          architecture: x64
+          cache: yarn
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -80,6 +94,13 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Node.Js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          check-latest: true
+          architecture: x64
+          cache: yarn
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
