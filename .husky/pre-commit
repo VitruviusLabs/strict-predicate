@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+. "$(dirname "$0")/_/husky.sh"
+
+yarn run lint-staged
+yarn run ts:check
+yarn run test:unit
