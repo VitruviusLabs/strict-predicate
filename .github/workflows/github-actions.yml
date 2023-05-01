@@ -22,6 +22,13 @@ jobs:
           cache: yarn
       - name: Install dependencies
         run: yarn install
+      - name: Dependencies caching
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        #   restore-keys: |
+        #     ${{ runner.os }}-yarn-
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -47,13 +54,11 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Node.Js
-        uses: actions/setup-node@v3
+      - name: Dependencies cache unpacking
+        uses: actions/cache@v3
         with:
-          node-version: 18
-          check-latest: true
-          architecture: x64
-          cache: yarn
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -65,13 +70,11 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Node.Js
-        uses: actions/setup-node@v3
+      - name: Dependencies cache unpacking
+        uses: actions/cache@v3
         with:
-          node-version: 18
-          check-latest: true
-          architecture: x64
-          cache: yarn
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -83,6 +86,11 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Dependencies cache unpacking
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -94,13 +102,11 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Node.Js
-        uses: actions/setup-node@v3
+      - name: Dependencies cache unpacking
+        uses: actions/cache@v3
         with:
-          node-version: 18
-          check-latest: true
-          architecture: x64
-          cache: yarn
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
