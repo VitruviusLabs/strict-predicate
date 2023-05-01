@@ -1,5 +1,5 @@
 # cspell:ignore mocharc
-name: CI/CD Test
+name: Continuous Integration and Continuous Deployment (main)
 
 run-name: Running CI/CD (Triggered by user ${{ github.triggering_actor }})
 
