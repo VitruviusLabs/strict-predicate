@@ -1,3 +1,4 @@
+# cspell:ignore mocharc
 name: CI/CD Test
 
 run-name: Running CI/CD for ${{ github.ref_name }} (Triggered by user ${{ github.actor }})
@@ -51,7 +52,7 @@ jobs:
         with:
           name: initial-artifacts
       - name: Lint with ESlint
-        run: yarn eslint:check
+        run: yarn run eslint:check
 
   typescript-syntax-check:
     needs: setup
@@ -62,7 +63,7 @@ jobs:
         with:
           name: initial-artifacts
       - name: Check TypeScript syntax
-        run: yarn tsc -p tsconfig.build.json --noEmit
+        run: yarn run tsc -p tsconfig.build.json --noEmit
 
   spell-check:
     needs: setup
@@ -73,7 +74,7 @@ jobs:
         with:
           name: initial-artifacts
       - name: Check spelling with CSpell
-        run: yarn spell:check
+        run: yarn run spell:check
 
   test:
     needs: setup
@@ -84,5 +85,5 @@ jobs:
         with:
           name: initial-artifacts
       - name: Test with Mocha, Chai and Sinon
-        run: yarn test:ci
+        run: yarn run test:ci
 

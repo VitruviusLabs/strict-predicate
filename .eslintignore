@@ -5,6 +5,7 @@
 /build/*
 /lib/*
 /.stryker-tmp/*
+/coverage/*
 
 # Ignore files #
 ################
