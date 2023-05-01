@@ -1,4 +1,6 @@
 {
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compileOnSave": false,
 	"compilerOptions": {
 		"sourceMap": false,
 		"noEmit": true,
@@ -41,5 +43,6 @@
 	},
 	"include": [
 		"./src"
-	]
+	],
+	"exclude": ["node_modules"]
 }
