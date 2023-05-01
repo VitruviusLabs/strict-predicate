@@ -1,18 +1,89 @@
 name: CI/CD Test
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+
+run-name: Running CI/CD for ${{ github.ref_name }} (Triggered by user ${{ github.actor }})
+
+on: [ push, pull_request ]
+
 jobs:
-  Explore-GitHub-Actions:
+
+  setup:
     runs-on: ubuntu-latest
+
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Set up Node.Js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          check-latest: true
+          architecture: x64
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: initial-artifacts
+          path: |
+            node_modules/
+            src/
+            __tests__/
+            .vscode/
+            package.json
+            yarn.lock
+            tsconfig.json
+            tsconfig.build.json
+            tsconfig.eslint.json
+            tsconfig.mocha.json
+            tsconfig.stryker.json
+            .eslintrc.cjs
+            .eslintignore
+            stryker.conf.json
+            .mocharc.json
+            .c8rc.json
+
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: initial-artifacts
+      - name: Lint with ESlint
+        run: yarn eslint:check
+
+  typescript-syntax-check:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: initial-artifacts
+      - name: Check TypeScript syntax
+        run: yarn tsc -p tsconfig.build.json --noEmit
+
+  spell-check:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: initial-artifacts
+      - name: Check spelling with CSpell
+        run: yarn spell:check
+
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: initial-artifacts
+      - name: Test with Mocha, Chai and Sinon
+        run: yarn test:ci
+

@@ -35,7 +35,7 @@
 		"test": "yarn test:unit",
 		"test:mutation": "stryker run",
 		"test:unit": "NODE_ENV=test TS_NODE_PROJECT=./tsconfig.mocha.json c8 mocha --parallel",
-		"ts:check": "tsc --noEmit",
+		"ts:check": "tsc -p tsconfig.build.json --noEmit",
 		"upgrade:deps": "yarn upgrade-interactive",
 		"spell:check": "cspell -c ./.vscode/cspell.json ./src"
 	},
