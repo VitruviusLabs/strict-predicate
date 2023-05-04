@@ -57,6 +57,7 @@ function isStructuredData<Type>(
 			{
 				throw new Error(
 					`property ${key} is invalid`,
+					/* c8 ignore next 2 */
 					// Stryker disable next-line ObjectLiteral: cause
 					(error instanceof Error) ? { cause: error } : undefined
 				);

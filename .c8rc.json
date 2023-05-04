@@ -1,0 +1,23 @@
+{
+  "src": "./src",
+  "exclude": [
+    "**/__tests__/**",
+	"src/Types/**/*.*",
+	"src/**/index.ts",
+	"src/**/_index.ts"
+  ],
+  "extension": [
+    ".ts"
+  ],
+  "reporter": [
+    "html"
+  ],
+  "report-dir": "./coverage",
+  "skip-full": true,
+  "check-coverage": true,
+  "all": true,
+  "statements": 100,
+  "branches": 100,
+  "functions": 100,
+  "lines": 100
+}

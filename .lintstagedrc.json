@@ -1,0 +1,8 @@
+{
+	"*.ts": [
+		"yarn run eslint:check"
+	],
+	"*": [
+		"yarn run spell:check"
+	]
+}
