@@ -1,4 +1,6 @@
-import { hasNullableProperty, isDefined } from "../TypeGuard/_index.js";
+import { hasNullableProperty } from "../TypeGuard/hasNullableProperty.js";
+
+import { isDefined } from "../TypeGuard/isDefined.js";
 
 import { hasAllowedKeys } from "./hasAllowedKeys.js";
 
